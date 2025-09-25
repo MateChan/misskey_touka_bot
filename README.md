@@ -32,4 +32,5 @@ uv run main.py
 - [yupix/MiPA: Python Misskey Bot Framework](https://github.com/yupix/MiPA)
   - Misskey Botフレームワーク
 - [briaai/RMBG\-2\.0 · Hugging Face](https://huggingface.co/briaai/RMBG-2.0)
+- [PramaLLC/BEN2 · Hugging Face](https://huggingface.co/PramaLLC/BEN2)
   - 背景除去用の深層学習モデル

@@ -10,13 +10,13 @@ from mipa import Bot
 from mipac.models import NotificationNote
 from PIL import Image
 
-from bg_remover import BackgroundRemover
+from bg_remover import BEN2
 
 
 class Misskey(Bot):
     def __init__(self) -> None:
         super().__init__()
-        self.remover = BackgroundRemover()
+        self.remover = BEN2()
 
     async def __connect_channel(self) -> None:
         await self.router.connect_channel(["main"])

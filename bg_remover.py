@@ -1,11 +1,41 @@
+import warnings
+from abc import ABC, abstractmethod
+
 import torch
+from ben2 import AutoModel
 from PIL import Image
 from torch.nn import Module
 from torchvision import transforms
 from transformers import AutoModelForImageSegmentation
 
 
-class BackgroundRemover:
+class BackgroundRemover(ABC):
+    @abstractmethod
+    def remove_background(self, image: Image.Image) -> Image.Image:
+        pass
+
+
+class BEN2(BackgroundRemover):
+    def __init__(self):
+        warnings.filterwarnings(
+            "ignore",
+            category=UserWarning,
+            module="torch",
+            message=r"torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument.",
+        )
+        model = AutoModel.from_pretrained("PramaLLC/BEN2")
+        assert model is not None
+        self.model = model
+        self.model.cuda()
+        self.model.eval()
+
+    def remove_background(self, image: Image.Image) -> Image.Image:
+        foreground = self.model.inference(image)
+        assert isinstance(foreground, Image.Image)
+        return foreground
+
+
+class BiRefNet(BackgroundRemover):
     def __init__(self):
         self.model: Module = AutoModelForImageSegmentation.from_pretrained(
             "briaai/RMBG-2.0",
@@ -40,7 +70,7 @@ class BackgroundRemover:
 
 
 if __name__ == "__main__":
-    background_remover = BackgroundRemover()
+    background_remover = BEN2()
     image = Image.open("./sample/input.jpg")
     no_bg_image = background_remover.remove_background(image)
     no_bg_image.save("./sample/out.webp")

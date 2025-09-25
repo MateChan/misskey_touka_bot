@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "ben2",
     "kornia>=0.7.4",
     "mipa>=0.4.2",
     "python-dotenv>=1.0.1",
@@ -13,3 +14,6 @@ dependencies = [
     "torchvision>=0.20.1",
     "transformers>=4.46.2",
 ]
+
+[tool.uv.sources]
+ben2 = { git = "https://github.com/PramaLLC/BEN2.git" }
