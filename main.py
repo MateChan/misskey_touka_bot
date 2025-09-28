@@ -4,6 +4,7 @@ from io import BytesIO
 from uuid import uuid4
 
 import requests
+import torch
 from aiohttp import ClientWebSocketResponse
 from dotenv import load_dotenv
 from mipa import Bot
@@ -16,7 +17,8 @@ from bg_remover import BEN2
 class Misskey(Bot):
     def __init__(self) -> None:
         super().__init__()
-        self.remover = BEN2()
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.remover = BEN2(device)
 
     async def __connect_channel(self) -> None:
         await self.router.connect_channel(["main"])

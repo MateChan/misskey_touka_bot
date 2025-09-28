@@ -16,7 +16,7 @@ class BackgroundRemover(ABC):
 
 
 class BEN2(BackgroundRemover):
-    def __init__(self):
+    def __init__(self, device: torch.device):
         warnings.filterwarnings(
             "ignore",
             category=UserWarning,
@@ -26,7 +26,7 @@ class BEN2(BackgroundRemover):
         model = AutoModel.from_pretrained("PramaLLC/BEN2")
         assert model is not None
         self.model = model
-        self.model.cuda()
+        self.model.to(device)
         self.model.eval()
 
     def remove_background(self, image: Image.Image) -> Image.Image:
@@ -36,12 +36,13 @@ class BEN2(BackgroundRemover):
 
 
 class BiRefNet(BackgroundRemover):
-    def __init__(self):
+    def __init__(self, device: torch.device):
         self.model: Module = AutoModelForImageSegmentation.from_pretrained(
             "briaai/RMBG-2.0",
             trust_remote_code=True,
         )
-        self.model.cuda()
+        self.device = device
+        self.model.to(device)
         self.model.eval()
         self.to_pil_image = transforms.ToPILImage()
         self.resize = transforms.Resize((1024, 1024))
@@ -55,7 +56,7 @@ class BiRefNet(BackgroundRemover):
         input_images = self.resize.forward(image)
         input_images = self.to_tensor(input_images)
         input_images = self.normalize.forward(input_images)
-        input_images = input_images.unsqueeze(0).cuda()
+        input_images = input_images.unsqueeze(0).to(self.device)
 
         with torch.no_grad():
             preds: torch.Tensor = self.model.forward(input_images)
@@ -70,7 +71,9 @@ class BiRefNet(BackgroundRemover):
 
 
 if __name__ == "__main__":
-    background_remover = BEN2()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    background_remover = BEN2(device)
     image = Image.open("./sample/input.jpg")
     no_bg_image = background_remover.remove_background(image)
     no_bg_image.save("./sample/out.webp")
