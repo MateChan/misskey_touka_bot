@@ -30,7 +30,7 @@ class BEN2(BackgroundRemover):
         self.model.eval()
 
     def remove_background(self, image: Image.Image) -> Image.Image:
-        foreground = self.model.inference(image)
+        foreground = self.model.inference(image, refine_foreground=True)
         assert isinstance(foreground, Image.Image)
         return foreground
 
