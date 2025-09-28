@@ -37,7 +37,18 @@ class Misskey(Bot):
         if not note.text or note.text.find("透過") == -1 or note.user.is_bot:
             return
 
-        for file in note.files:
+        if len(note.files) > 0:
+            files = note.files
+        elif (
+            note.reply is not None
+            and len(note.reply.files) > 0
+            and note.user.id == note.reply.user.id
+        ):
+            files = note.reply.files
+        else:
+            return
+
+        for file in files:
             res = requests.get(file.url)
 
             input_img = Image.open(BytesIO(res.content))
