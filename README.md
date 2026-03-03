@@ -33,4 +33,5 @@ uv run main.py
   - Misskey Botフレームワーク
 - [briaai/RMBG\-2\.0 · Hugging Face](https://huggingface.co/briaai/RMBG-2.0)
 - [PramaLLC/BEN2 · Hugging Face](https://huggingface.co/PramaLLC/BEN2)
+- [KupynOrest/s3od · GitHub](https://github.com/KupynOrest/s3od)
   - 背景除去用の深層学習モデル

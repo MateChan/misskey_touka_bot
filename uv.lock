@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.12"
 
 [[package]]
@@ -384,6 +384,7 @@ dependencies = [
     { name = "mipa" },
     { name = "opencv-python" },
     { name = "python-dotenv" },
+    { name = "s3od" },
     { name = "timm" },
     { name = "torch" },
     { name = "torchvision" },
@@ -397,6 +398,7 @@ requires-dist = [
     { name = "mipa", specifier = ">=0.4.2" },
     { name = "opencv-python", specifier = ">=4.12.0.88" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
+    { name = "s3od", git = "https://github.com/KupynOrest/s3od.git" },
     { name = "timm", specifier = ">=1.0.11" },
     { name = "torch", specifier = ">=2.5.1" },
     { name = "torchvision", specifier = ">=0.20.1" },
@@ -923,6 +925,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz", hash = "sha256:dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf", size = 134517, upload-time = "2025-08-18T20:46:02.573Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl", hash = "sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6", size = 64738, upload-time = "2025-08-18T20:46:00.542Z" },
+]
+
+[[package]]
+name = "s3od"
+version = "0.1.0"
+source = { git = "https://github.com/KupynOrest/s3od.git#9c83de97a2458d7a4d412e4735ae4d388616dd83" }
+dependencies = [
+    { name = "huggingface-hub" },
+    { name = "numpy" },
+    { name = "opencv-python" },
+    { name = "pillow" },
+    { name = "torch" },
+    { name = "torchvision" },
+    { name = "transformers" },
 ]
 
 [[package]]

@@ -11,14 +11,14 @@ from mipa import Bot
 from mipac.models import NotificationNote
 from PIL import Image
 
-from bg_remover import BEN2
+from bg_remover import S3OD
 
 
 class Misskey(Bot):
     def __init__(self) -> None:
         super().__init__()
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.remover = BEN2(device)
+        self.remover = S3OD(device)
 
     async def __connect_channel(self) -> None:
         await self.router.connect_channel(["main"])

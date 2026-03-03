@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 import torch
 from ben2 import AutoModel
 from PIL import Image
+from s3od import BackgroundRemoval as S3ODModel
 from torch.nn import Module
 from torchvision import transforms
 from transformers import AutoModelForImageSegmentation
@@ -13,6 +14,15 @@ class BackgroundRemover(ABC):
     @abstractmethod
     def remove_background(self, image: Image.Image) -> Image.Image:
         pass
+
+
+class S3OD(BackgroundRemover):
+    def __init__(self, device: torch.device):
+        self.model = S3ODModel(device=str(device))
+
+    def remove_background(self, image: Image.Image) -> Image.Image:
+        result = self.model.remove_background(image)
+        return result.rgba_image
 
 
 class BEN2(BackgroundRemover):
@@ -73,7 +83,7 @@ class BiRefNet(BackgroundRemover):
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    background_remover = BEN2(device)
+    background_remover = S3OD(device)
     image = Image.open("./sample/input.jpg")
     no_bg_image = background_remover.remove_background(image)
     no_bg_image.save("./sample/out.webp")
